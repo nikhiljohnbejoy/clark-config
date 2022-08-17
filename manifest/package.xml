@@ -7,10 +7,12 @@
     </types>
     <types>
         <members>AvailableConfigsController</members>
+        <members>CaseConfigsController</members>
         <name>ApexClass</name>
     </types>
     <types>
         <members>availableConfigs</members>
+        <members>caseConfigs</members>
         <name>LightningComponentBundle</name>
     </types>
     <types>

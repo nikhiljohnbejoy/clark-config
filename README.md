@@ -62,12 +62,11 @@ The user story can be divided into the following tasks and subtasks.
 
 3. Creation of the `Case Configs` lightning web component.<br/>
     _Subtasks_
-    - [ ] Create a new lwc component with name caseConfigs.
-    - [ ] Create a apex controller to retrieve the list of case configs and callout.
+    - [x] Create a new lwc component with name caseConfigs.
+    - [x] Create a apex controller to retrieve the list of case configs and callout.
     - [ ] Write test class to validate the apex class functionality.
-    - [ ] Display the case configs in a tabular format.
-    - [ ] It should be possible to select multiple records in the list view.
-    - [ ] Create an "SEND" button to send the selected configs to the `Case Configs` list.
+    - [x] Display the case configs in a tabular format.
+    - [x] Create an "SEND" button to send the configs.
     - [ ] On "SEND": Sets the status of the Case to "Closed".
     - [ ] On "SEND": A Post request is sent to an external service.
     - [ ] On "SEND": User cannot add any more Configs.

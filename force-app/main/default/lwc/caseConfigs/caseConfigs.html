@@ -1,13 +1,13 @@
 <template>
-    <lightning-card title="Available Configs" icon-name="standard:bundle_config" class="slds-card_boundary">
-        <lightning-button label="Add" slot="actions" onclick={addCaseConfigs}></lightning-button>
+    <lightning-card title="Case Configs" icon-name="standard:case_transcript" class="slds-card_boundary">
+        <lightning-button label="Send" slot="actions" onclick={sendCaseConfigs}></lightning-button>
         <template if:true={configs.data}>
             <p class="slds-p-horizontal_small">
                 <lightning-datatable
                         key-field="Id"
                         data={configs.data}
                         columns={columns}
-                        selected-rows={selectedConfigIds}>
+                        hide-checkbox-column="true">
                 </lightning-datatable>
             </p>
         </template>
