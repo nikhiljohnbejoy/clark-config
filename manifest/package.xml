@@ -5,5 +5,17 @@
         <members>Case_Config__c</members>
         <name>CustomObject</name>
     </types>
+    <types>
+        <members>AvailableConfigsController</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>availableConfigs</members>
+        <name>LightningComponentBundle</name>
+    </types>
+    <types>
+       <members>RefreshCaseConfig</members>
+       <name>LightningMessageChannel</name>
+    </types>
     <version>55.0</version>
 </Package>

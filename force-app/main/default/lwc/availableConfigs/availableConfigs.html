@@ -1,0 +1,16 @@
+<template>
+    <lightning-card title="Available Configs" icon-name="standard:bundle_config" class="slds-card_boundary">
+        <lightning-button label="ADD" slot="actions" onclick={addCaseConfigs}></lightning-button>
+        <template if:true={configs.data}>
+            <p class="slds-p-horizontal_small">
+                <lightning-datatable
+                        key-field="Id"
+                        data={configs.data}
+                        columns={columns}
+                        selected-rows={selectedConfigIds}>
+                </lightning-datatable>
+            </p>
+        </template>
+        <p slot="footer">Card Footer</p>
+    </lightning-card>
+</template>

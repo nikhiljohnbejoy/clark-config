@@ -49,18 +49,22 @@ The user story can be divided into the following tasks and subtasks.
 
 2. Creation of the `Available Configs` lightning web component.<br/>
     _Subtasks_
-    - [ ] Create a new lwc component with name AvailableConfigs.
-    - [ ] Create a apex controller to retrieve the list of configs.
-    - [ ] Display the available configs in a tabular format.
-    - [ ] It should be possible to select multiple records in the list view.
-    - [ ] Create an "ADD" button to send the selected configs to the `Case Configs` list.
+    - [x] Create a new lwc component with name availableConfigs.
+    - [x] Create a apex controller to retrieve the list of configs.
+    - [ ] Wrtie test class to validate the apex class functionality.
+    - [x] Display the available configs in a tabular format.
+    - [x] It should be possible to select multiple records in the list view.
+    - [x] Create an "ADD" button to send the selected configs to the `Case Configs` list.
+    - [x] Create a LightningMessageChannel for communicating to the `Case Configs` component.
     - [ ] _Optional_ : Sort records by any column in the list.
     - [ ] _Optional_ : Add Pagination to the list.
+    - [ ] _Optional_ : Testing of the LwC component.
 
 3. Creation of the `Case Configs` lightning web component.<br/>
     _Subtasks_
-    - [ ] Create a new lwc component with name CaseConfigs.
-    - [ ] Create a apex controller to retrieve the list of case configs.
+    - [ ] Create a new lwc component with name caseConfigs.
+    - [ ] Create a apex controller to retrieve the list of case configs and callout.
+    - [ ] Write test class to validate the apex class functionality.
     - [ ] Display the case configs in a tabular format.
     - [ ] It should be possible to select multiple records in the list view.
     - [ ] Create an "SEND" button to send the selected configs to the `Case Configs` list.
@@ -69,7 +73,8 @@ The user story can be divided into the following tasks and subtasks.
     - [ ] On "SEND": User cannot add any more Configs.
     - [ ] On "SEND": Send option is no longer available.
     - [ ] _Optional_ : Sort records by any column in the list.
+    - [ ] _Optional_ : Testing of the LwC component.
 
 ## Feedback and Notes
-
+- `Case_Config__c` - fields: `Label` (Text, **Unique**) , which means that a particular `Config__c` configuration can be assosiated with one case only.
 - Restriction of addition of existing configs to the case configs to be done on the `Case Configs` component since in the future there can be another component which needs to interact with the `Available Configs` component in the case detail page and we should not hide/disable the options because they exist in `Case Configs`.
