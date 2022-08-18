@@ -27,7 +27,7 @@ public with sharing class AvailableConfigsController {
                     status = 'Added '+decision.getRecords().size()+' new configs';
                 }
                 else{
-                    status = 'nonewinserts';
+                    status = 'NO_NEW_INSERTS';
                 }
             }
             else{

@@ -18,14 +18,14 @@ public with sharing class CaseConfigsController {
                 if(res.getStatusCode() == 200){
                     //On "SEND": Sets the status of the Case to "Closed".
                     updateCaseStatus(currentCase);
-                    status = 'success';
+                    status = 'SUCCESS';
                 }
                 else{
-                    status = 'calloutfailed';
+                    status = 'CALLOUT_FAILED';
                 }
             }
             else{
-                status = 'hassentbefore';
+                status = 'HAS_SENT';
             }    
             return status;
         } catch (Exception e) {

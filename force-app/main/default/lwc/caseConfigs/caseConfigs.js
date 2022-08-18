@@ -37,15 +37,15 @@ export default class CaseConfigs extends LightningElement {
         if(this.configs.data.length > 0){
             sendConfigsToExternal({ caseId: this.recordId, caseConfigs: this.configs.data})
             .then((result) => {
-                if(result === 'success'){
+                if(result === 'SUCCESS'){
                     this.showNotification(SUCCESS_TITLE, SUCCESS_MESSAGE, SUCCESS_VARIANT);
                     this.disableSendButton = true;
                     getRecordNotifyChange([{recordId: this.recordId}]);
                 }
-                else if(result === 'calloutfailed'){
+                else if(result === 'CALLOUT_FAILED'){
                     this.showNotification(ERROR_TITLE, ERROR_CALLOUT_MESSAGE, ERROR_VARIANT);
                 }
-                else if(result === 'hassentbefore'){
+                else if(result === 'HAS_SENT'){
                     this.showNotification(INFO_TITLE, INFO_SENT_MESSAGE, INFO_VARIANT);
                     this.disableSendButton = true;
                 }

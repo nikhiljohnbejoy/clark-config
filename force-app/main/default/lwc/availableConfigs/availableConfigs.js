@@ -39,7 +39,7 @@ export default class AvailableConfigs extends LightningElement {
         if(selectedRecords.length > 0){
             saveCaseConfigs({ caseId: this.recordId, configList: selectedRecords})
             .then((result) => {
-                if(result === 'nonewinserts'){
+                if(result === 'NO_NEW_INSERTS'){
                     this.showNotification(INFO_NOCONFIG_TITLE, INFO_NOCONFIG_MESSAGE, INFO_VARIANT);
                 }
                 else if(result === 'CONFIG_ALREADY_SENT'){
@@ -69,7 +69,7 @@ export default class AvailableConfigs extends LightningElement {
         this.dispatchEvent(evt);
     }
     doSorting(event) {
-        // calling sortdata function to sort the data based on direction and selected field
+        this.selectedConfigIds = [];
         this.sortBy = event.detail.fieldName;
         this.sortDirection = event.detail.sortDirection;
     }
