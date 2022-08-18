@@ -11,15 +11,21 @@ public with sharing class AvailableConfigsController {
     public static string saveCaseConfigs(Id caseId, List<Config__c> configList){
         String status;
         try {
-            Set<String> existingLabels = getExistingCaseLabels();
-            List<Case_Config__c> newCaseConfigs = getNewCaseConfigs(caseId, configList, existingLabels);
-            if(newCaseConfigs.size() > 0){
-                SObjectAccessDecision decision = Security.stripInaccessible(AccessType.CREATABLE, newCaseConfigs);
-                insert decision.getRecords();
-                status = 'Added '+decision.getRecords().size()+' new configs';
+            Case currentCase = [select Id, Status, Sent_Case_Configs__c from Case where Id =:caseId WITH SECURITY_ENFORCED];
+            if(!currentCase.Sent_Case_Configs__c){
+                Set<String> existingLabels = getExistingCaseLabels();
+                List<Case_Config__c> newCaseConfigs = getNewCaseConfigs(caseId, configList, existingLabels);
+                if(newCaseConfigs.size() > 0){
+                    SObjectAccessDecision decision = Security.stripInaccessible(AccessType.CREATABLE, newCaseConfigs);
+                    insert decision.getRecords();
+                    status = 'Added '+decision.getRecords().size()+' new configs';
+                }
+                else{
+                    status = 'nonewinserts';
+                }
             }
             else{
-                status = 'nonewinserts';
+                status = 'CONFIG_ALREADY_SENT';
             }
             return status;
         } catch (Exception e) {

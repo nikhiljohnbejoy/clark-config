@@ -69,7 +69,7 @@ The user story can be divided into the following tasks and subtasks.
     - [x] Create an "SEND" button to send the configs.
     - [x] On "SEND": Sets the status of the Case to "Closed".
     - [x] On "SEND": A Post request is sent to an external service. _(Adding NamedCredential, wrapper class, sending request, Handling Error)_
-    - [ ] On "SEND": User cannot add any more Configs.
+    - [x] On "SEND": User cannot add any more Configs.
     - [x] On "SEND": Send option is no longer available.
     - [ ] _Optional_ : Sort records by any column in the list.
     - [ ] _Optional_ : Testing of the LwC component.

@@ -16,8 +16,11 @@ const SUCCESS_TITLE = 'Success';
 const SUCCESS_VARIANT = 'success';
 const ERROR_TITLE = 'Error in Adding configs';
 const ERROR_VARIANT = 'error';
-const INFO_TITLE = 'No available configs selected';
-const INFO_MESSAGE = 'All selections are already added in case configs';
+const INFO_NOCONFIG_TITLE = 'No available configs selected';
+const INFO_SENT_TITLE = 'No action taken';
+const INFO_NOCONFIG_MESSAGE = 'All selections are already added in case configs';
+const INFO_SELECTION_MESSAGE = 'Please select configs to be added';
+const INFO_SENT_MESSAGE = 'The case configs have already been sent';
 const INFO_VARIANT = 'info';
 export default class AvailableConfigs extends LightningElement {
     @api recordId;
@@ -26,7 +29,7 @@ export default class AvailableConfigs extends LightningElement {
     configs;
     @wire(MessageContext)
     messageContext;
-
+    disableAddButton = false;
     selectedConfigIds = [];
     addCaseConfigs(){
         let selectedRecords =  this.template.querySelector("lightning-datatable").getSelectedRows();
@@ -34,33 +37,32 @@ export default class AvailableConfigs extends LightningElement {
             saveCaseConfigs({ caseId: this.recordId, configList: selectedRecords})
             .then((result) => {
                 if(result === 'nonewinserts'){
-                    const evt = new ShowToastEvent({
-                        title: INFO_TITLE,
-                        message: INFO_MESSAGE,
-                        variant: INFO_VARIANT,
-                    });
-                    this.dispatchEvent(evt);
+                    this.showNotification(INFO_NOCONFIG_TITLE, INFO_NOCONFIG_MESSAGE, INFO_VARIANT);
+                }
+                else if(result === 'CONFIG_ALREADY_SENT'){
+                    this.showNotification(INFO_SENT_TITLE, INFO_SENT_MESSAGE, INFO_VARIANT);
+                    this.disableAddButton = true;
                 }
                 else{
-                    //send refresh message
                     publish(this.messageContext, refreshCaseConfig, {});
-                    const evt = new ShowToastEvent({
-                        title: SUCCESS_TITLE,
-                        message: result,
-                        variant: SUCCESS_VARIANT,
-                    });
-                    this.dispatchEvent(evt);
+                    this.showNotification(SUCCESS_TITLE, result, SUCCESS_VARIANT);
                 }
                 this.selectedConfigIds = [];
             })
             .catch((error) => {
-                const evt = new ShowToastEvent({
-                    title: ERROR_TITLE,
-                    message: error.message,
-                    variant: ERROR_VARIANT,
-                });
-                this.dispatchEvent(evt);
+                this.showNotification(ERROR_TITLE, error.message, ERROR_VARIANT);
             });
-        }   
+        }
+        else{
+            this.showNotification(INFO_NOCONFIG_TITLE, INFO_SELECTION_MESSAGE, INFO_VARIANT);
+        }
+    }
+    showNotification(toastTitle, toastMessage, toastVariant) {
+        const evt = new ShowToastEvent({
+            title: toastTitle,
+            message: toastMessage,
+            variant: toastVariant,
+        });
+        this.dispatchEvent(evt);
     }
 }
