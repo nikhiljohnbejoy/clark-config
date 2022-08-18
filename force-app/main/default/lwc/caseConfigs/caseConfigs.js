@@ -1,6 +1,7 @@
 import { LightningElement, wire, api } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { refreshApex } from '@salesforce/apex';
+import { getRecordNotifyChange } from 'lightning/uiRecordApi';
 import { subscribe, unsubscribe, APPLICATION_SCOPE, MessageContext } from 'lightning/messageService';
 import refreshCaseConfig from '@salesforce/messageChannel/RefreshCaseConfig__c';
 import getCaseConfigs from '@salesforce/apex/CaseConfigsController.getCaseConfigs';
@@ -15,10 +16,13 @@ const Columns = [
 ];
 const SUCCESS_TITLE = 'Success';
 const SUCCESS_VARIANT = 'success';
+const SUCCESS_MESSAGE = 'The case configs were sent successfully';
 const ERROR_TITLE = 'Error in Sending configs';
 const ERROR_VARIANT = 'error';
+const ERROR_CALLOUT_MESSAGE = 'The configs could not be sent';
 const INFO_TITLE = 'No action taken';
-const INFO_MESSAGE = 'No case configs to send';
+const INFO_NONE_MESSAGE = 'No case configs to send';
+const INFO_SENT_MESSAGE = 'The case configs have already been sent';
 const INFO_VARIANT = 'info';
 export default class CaseConfigs extends LightningElement {
     @api recordId;
@@ -28,42 +32,39 @@ export default class CaseConfigs extends LightningElement {
     @wire(getCaseConfigs, { caseId: '$recordId' })
     configs;
     columns = Columns;
-
+    disableSendButton = false;
     sendCaseConfigs(){
-        //On "SEND": Sets the status of the Case to "Closed".
-        //On "SEND": A Post request is sent to an external service.
         if(this.configs.data.length > 0){
             sendConfigsToExternal({ caseId: this.recordId, caseConfigs: this.configs.data})
             .then((result) => {
-                console.log('HERE');
                 if(result === 'success'){
-                    const evt = new ShowToastEvent({
-                        title: SUCCESS_TITLE,
-                        message: result,
-                        variant: SUCCESS_VARIANT,
-                    });
-                    this.dispatchEvent(evt);
+                    this.showNotification(SUCCESS_TITLE, SUCCESS_MESSAGE, SUCCESS_VARIANT);
+                    this.disableSendButton = true;
+                    getRecordNotifyChange([{recordId: this.recordId}]);
+                }
+                else if(result === 'calloutfailed'){
+                    this.showNotification(ERROR_TITLE, ERROR_CALLOUT_MESSAGE, ERROR_VARIANT);
+                }
+                else if(result === 'hassentbefore'){
+                    this.showNotification(INFO_TITLE, INFO_SENT_MESSAGE, INFO_VARIANT);
+                    this.disableSendButton = true;
                 }
             })
             .catch((error) => {
-                const evt = new ShowToastEvent({
-                    title: ERROR_TITLE,
-                    message: error.message,
-                    variant: ERROR_VARIANT,
-                });
-                this.dispatchEvent(evt);
+                this.showNotification(ERROR_TITLE, error.message, ERROR_VARIANT);
             });
-        //On "SEND": Send option is no longer available.
-        //On "SEND": User cannot add any more Configs.
         }
         else{
-            const evt = new ShowToastEvent({
-                title: INFO_TITLE,
-                message: INFO_MESSAGE,
-                variant: INFO_VARIANT,
-            });
-            this.dispatchEvent(evt);
+            this.showNotification(INFO_TITLE, INFO_NONE_MESSAGE, INFO_VARIANT);
         }
+    }
+    showNotification(toastTitle, toastMessage, toastVariant) {
+        const evt = new ShowToastEvent({
+            title: toastTitle,
+            message: toastMessage,
+            variant: toastVariant,
+        });
+        this.dispatchEvent(evt);
     }
 
     subscribeToMessageChannel() {

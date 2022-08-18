@@ -70,10 +70,14 @@ The user story can be divided into the following tasks and subtasks.
     - [x] On "SEND": Sets the status of the Case to "Closed".
     - [x] On "SEND": A Post request is sent to an external service. _(Adding NamedCredential, wrapper class, sending request, Handling Error)_
     - [ ] On "SEND": User cannot add any more Configs.
-    - [ ] On "SEND": Send option is no longer available.
+    - [x] On "SEND": Send option is no longer available.
     - [ ] _Optional_ : Sort records by any column in the list.
     - [ ] _Optional_ : Testing of the LwC component.
 
 ## Understandings and Notes
 - `Case_Config__c` - fields: `Label` (Text, **Unique**) , which means that a particular `Config__c` configuration can be assosiated with one case only.
+- **Requirement** _When the “Send” button is pressed you cannot add new Config records and send the request a second time_ Is intepreted as once a send button is pressed, the "Add" button in `Available Configs` and the the "Send" button in `Case Configs` should no longer have the ability to add or send. This behavior is understood to be persistent. So we would need to store the information of cases in which the action has been performed and check on load of the component.
+Not using Custom metadata object since the information does not need to be deployable
+Not considering Case status "Closed" as the criteria for preventing button actions.
+**Decision** To use a custom field on Case object to track if it already sent the configs. 
 - Restriction of addition of existing configs to the case configs to be done on the `Case Configs` component since in the future there can be another component which needs to interact with the `Available Configs` component in the case detail page and we should not hide/disable the options because they exist in `Case Configs`.

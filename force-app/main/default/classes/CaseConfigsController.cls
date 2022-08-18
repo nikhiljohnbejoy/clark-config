@@ -9,18 +9,25 @@ public with sharing class CaseConfigsController {
     }
     @AuraEnabled
     public static string sendConfigsToExternal(Id caseId, List<Case_Config__c> caseConfigs){
+        String status;
         try {
-        //On "SEND": A Post request is sent to an external service.
-        HTTPResponse res = makeCallout(caseId, caseConfigs);
-        System.debug(res.getBody());
-        //On "SEND": Sets the status of the Case to "Closed".
-        Case currentCase = [select Id, Status from Case where Id =:caseId WITH SECURITY_ENFORCED];
-        if(currentCase.Status != 'Closed'){
-            currentCase.Status = 'Closed';
-            update currentCase;
-        }
-        
-        return 'success';
+            Case currentCase = [select Id, Status, Sent_Case_Configs__c from Case where Id =:caseId WITH SECURITY_ENFORCED];
+            if(!currentCase.Sent_Case_Configs__c){
+                //On "SEND": A Post request is sent to an external service.
+                HTTPResponse res = makeCallout(caseId, caseConfigs);
+                if(res.getStatusCode() == 200){
+                    //On "SEND": Sets the status of the Case to "Closed".
+                    updateCaseStatus(currentCase);
+                    status = 'success';
+                }
+                else{
+                    status = 'calloutfailed';
+                }
+            }
+            else{
+                status = 'hassentbefore';
+            }    
+            return status;
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
@@ -35,5 +42,10 @@ public with sharing class CaseConfigsController {
         Http http = new Http();
         HTTPResponse res = http.send(req);
         return res;
+    }
+    private static void updateCaseStatus(Case currentCase){
+        currentCase.Status = 'Closed';
+        currentCase.Sent_Case_Configs__c = true;
+        update currentCase;
     }
 }

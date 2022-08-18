@@ -6,6 +6,10 @@
         <name>CustomObject</name>
     </types>
     <types>
+        <members>Case.Sent_Case_Configs__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
         <members>CaseConfigWrapper</members>
         <members>AvailableConfigsController</members>
         <members>CaseConfigsController</members>

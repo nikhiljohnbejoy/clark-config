@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sent_Case_Configs__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>This is a checkbox field intended to hold information if the case has sent configs using the case config component.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Keeps track of the case config sent Status</inlineHelpText>
+    <label>Sent Case Configs</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

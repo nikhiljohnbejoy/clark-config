@@ -1,7 +1,7 @@
 <template>
     <lightning-card title="Case Configs" icon-name="standard:case_transcript" class="slds-card_boundary">
         <template if:true={configs.data}>
-            <lightning-button label="Send" title="Click to send the case configs" slot="actions" onclick={sendCaseConfigs}></lightning-button>
+            <lightning-button label="Send" disabled={disableSendButton} title="Click button to send the case configs" slot="actions" onclick={sendCaseConfigs}></lightning-button>
             <p class="slds-p-horizontal_small">
                 <lightning-datatable
                         key-field="Id"

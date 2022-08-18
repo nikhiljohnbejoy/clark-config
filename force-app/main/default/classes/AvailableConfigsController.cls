@@ -9,8 +9,8 @@ public with sharing class AvailableConfigsController {
     }
     @AuraEnabled
     public static string saveCaseConfigs(Id caseId, List<Config__c> configList){
+        String status;
         try {
-            String status;
             Set<String> existingLabels = getExistingCaseLabels();
             List<Case_Config__c> newCaseConfigs = getNewCaseConfigs(caseId, configList, existingLabels);
             if(newCaseConfigs.size() > 0){
