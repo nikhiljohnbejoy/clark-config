@@ -6,6 +6,7 @@
         <name>CustomObject</name>
     </types>
     <types>
+        <members>CaseConfigWrapper</members>
         <members>AvailableConfigsController</members>
         <members>CaseConfigsController</members>
         <name>ApexClass</name>
@@ -18,6 +19,10 @@
     <types>
        <members>RefreshCaseConfig</members>
        <name>LightningMessageChannel</name>
+    </types>
+    <types>
+       <members>Clark_RequestCatcher</members>
+       <name>NamedCredential</name>
     </types>
     <version>55.0</version>
 </Package>

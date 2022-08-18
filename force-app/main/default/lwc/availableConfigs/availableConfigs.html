@@ -1,6 +1,6 @@
 <template>
     <lightning-card title="Available Configs" icon-name="standard:bundle_config" class="slds-card_boundary">
-        <lightning-button label="Add" slot="actions" onclick={addCaseConfigs}></lightning-button>
+        <lightning-button label="Add" title="Click to add to the case configs" slot="actions" onclick={addCaseConfigs}></lightning-button>
         <template if:true={configs.data}>
             <p class="slds-p-horizontal_small">
                 <lightning-datatable

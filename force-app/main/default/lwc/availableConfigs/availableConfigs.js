@@ -43,13 +43,13 @@ export default class AvailableConfigs extends LightningElement {
                 }
                 else{
                     //send refresh message
+                    publish(this.messageContext, refreshCaseConfig, {});
                     const evt = new ShowToastEvent({
                         title: SUCCESS_TITLE,
                         message: result,
                         variant: SUCCESS_VARIANT,
                     });
                     this.dispatchEvent(evt);
-                    publish(this.messageContext, refreshCaseConfig, {});
                 }
                 this.selectedConfigIds = [];
             })

@@ -67,13 +67,13 @@ The user story can be divided into the following tasks and subtasks.
     - [ ] Write test class to validate the apex class functionality.
     - [x] Display the case configs in a tabular format.
     - [x] Create an "SEND" button to send the configs.
-    - [ ] On "SEND": Sets the status of the Case to "Closed".
-    - [ ] On "SEND": A Post request is sent to an external service.
+    - [x] On "SEND": Sets the status of the Case to "Closed".
+    - [x] On "SEND": A Post request is sent to an external service. _(Adding NamedCredential, wrapper class, sending request, Handling Error)_
     - [ ] On "SEND": User cannot add any more Configs.
     - [ ] On "SEND": Send option is no longer available.
     - [ ] _Optional_ : Sort records by any column in the list.
     - [ ] _Optional_ : Testing of the LwC component.
 
-## Feedback and Notes
+## Understandings and Notes
 - `Case_Config__c` - fields: `Label` (Text, **Unique**) , which means that a particular `Config__c` configuration can be assosiated with one case only.
 - Restriction of addition of existing configs to the case configs to be done on the `Case Configs` component since in the future there can be another component which needs to interact with the `Available Configs` component in the case detail page and we should not hide/disable the options because they exist in `Case Configs`.
