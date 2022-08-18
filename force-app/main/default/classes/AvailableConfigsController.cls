@@ -1,8 +1,14 @@
 public with sharing class AvailableConfigsController {
     @AuraEnabled(cacheable=true)
-    public static List<Config__c> getAvailableConfigs(){
+    public static List<Config__c> getAvailableConfigs(String field, String sortOrder){
         try {
-            return [select Id, Label__c, Type__c, Amount__c from Config__c WITH SECURITY_ENFORCED];
+            String query;
+            query  = 'select Id, Label__c, Type__c, Amount__c from Config__c WITH SECURITY_ENFORCED';
+            if(field != null && sortOrder !=null){
+                query += ' ORDER BY '+field+' '+sortOrder;
+            }
+            return Database.query(String.escapeSingleQuotes(query));
+            //return [select Id, Label__c, Type__c, Amount__c from Config__c WITH SECURITY_ENFORCED];
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }

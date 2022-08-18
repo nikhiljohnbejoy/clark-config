@@ -8,9 +8,9 @@ import LABEL_FIELD from '@salesforce/schema/Config__c.Label__c';
 import TYPE_FIELD from '@salesforce/schema/Config__c.Type__c';
 import AMOUNT_FIELD from '@salesforce/schema/Config__c.Amount__c';
 const Columns = [
-    { label: 'Label', fieldName: LABEL_FIELD.fieldApiName, type: 'text' },
-    { label: 'Type', fieldName: TYPE_FIELD.fieldApiName, type: 'text' },
-    { label: 'Number', fieldName: AMOUNT_FIELD.fieldApiName, type: 'number' }
+    { label: 'Label', fieldName: LABEL_FIELD.fieldApiName, type: 'text', sortable: true },
+    { label: 'Type', fieldName: TYPE_FIELD.fieldApiName, type: 'text', sortable: true },
+    { label: 'Number', fieldName: AMOUNT_FIELD.fieldApiName, type: 'number', sortable: true }
 ];
 const SUCCESS_TITLE = 'Success';
 const SUCCESS_VARIANT = 'success';
@@ -25,12 +25,15 @@ const INFO_VARIANT = 'info';
 export default class AvailableConfigs extends LightningElement {
     @api recordId;
     columns=Columns;
-    @wire(getAvailableConfigs)
+    sortBy= LABEL_FIELD.fieldApiName;
+    sortDirection= 'asc';
+    @wire(getAvailableConfigs,{field : '$sortBy',sortOrder : '$sortDirection'})
     configs;
     @wire(MessageContext)
     messageContext;
     disableAddButton = false;
     selectedConfigIds = [];
+
     addCaseConfigs(){
         let selectedRecords =  this.template.querySelector("lightning-datatable").getSelectedRows();
         if(selectedRecords.length > 0){
@@ -64,5 +67,10 @@ export default class AvailableConfigs extends LightningElement {
             variant: toastVariant,
         });
         this.dispatchEvent(evt);
+    }
+    doSorting(event) {
+        // calling sortdata function to sort the data based on direction and selected field
+        this.sortBy = event.detail.fieldName;
+        this.sortDirection = event.detail.sortDirection;
     }
 }

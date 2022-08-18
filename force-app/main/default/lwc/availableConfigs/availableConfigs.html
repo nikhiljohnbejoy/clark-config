@@ -7,7 +7,10 @@
                         key-field="Id"
                         data={configs.data}
                         columns={columns}
-                        selected-rows={selectedConfigIds}>
+                        selected-rows={selectedConfigIds}
+                        sorted-by={sortBy}
+                        sorted-direction={sortDirection}
+                        onsort={doSorting}>
                 </lightning-datatable>
             </p>
         </template>

@@ -75,6 +75,7 @@ The user story can be divided into the following tasks and subtasks.
     - [ ] _Optional_ : Testing of the LwC component.
 
 ## Understandings and Notes
+- **ENDPOINT USED** - The endpoint used is [Request Catcher URL](https://clark-test-endpoint.requestcatcher.com/test).
 - `Case_Config__c` - fields: `Label` (Text, **Unique**) , which means that a particular `Config__c` configuration can be assosiated with one case only.
 - **Requirement** _When the “Send” button is pressed you cannot add new Config records and send the request a second time_ Is intepreted as once a send button is pressed, the "Add" button in `Available Configs` and the the "Send" button in `Case Configs` should no longer have the ability to add or send. This behavior is understood to be persistent. So we would need to store the information of cases in which the action has been performed and check on load of the component.
 Not using Custom metadata object since the information does not need to be deployable
