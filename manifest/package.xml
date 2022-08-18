@@ -28,5 +28,9 @@
        <members>Clark_RequestCatcher</members>
        <name>NamedCredential</name>
     </types>
+    <types>
+        <members>Case_Config_Page</members>
+        <name>FlexiPage</name>
+    </types>
     <version>55.0</version>
 </Package>
