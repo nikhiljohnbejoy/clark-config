@@ -1,4 +1,10 @@
 <template>
+    <div class="spinner">
+        <template if:true={isLoading}>
+             <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+             </lightning-spinner>
+        </template>
+    </div>
     <lightning-card title="Available Configs" icon-name="standard:bundle_config" class="slds-card_boundary">
         <lightning-button label="Add" disabled={disableAddButton} title="Click to add to the case configs" slot="actions" onclick={addCaseConfigs}></lightning-button>
         <template if:true={configs.data}>

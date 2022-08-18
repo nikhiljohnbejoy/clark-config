@@ -33,10 +33,13 @@ export default class CaseConfigs extends LightningElement {
     configs;
     columns = Columns;
     disableSendButton = false;
+    isLoading = false;
     sendCaseConfigs(){
         if(this.configs.data.length > 0){
+            this.isLoading = true;
             sendConfigsToExternal({ caseId: this.recordId, caseConfigs: this.configs.data})
             .then((result) => {
+                this.isLoading = false;
                 if(result === 'SUCCESS'){
                     this.showNotification(SUCCESS_TITLE, SUCCESS_MESSAGE, SUCCESS_VARIANT);
                     this.disableSendButton = true;
@@ -51,6 +54,7 @@ export default class CaseConfigs extends LightningElement {
                 }
             })
             .catch((error) => {
+                this.isLoading = false;
                 this.showNotification(ERROR_TITLE, error.message, ERROR_VARIANT);
             });
         }

@@ -33,12 +33,14 @@ export default class AvailableConfigs extends LightningElement {
     messageContext;
     disableAddButton = false;
     selectedConfigIds = [];
-
+    isLoading = false;
     addCaseConfigs(){
         let selectedRecords =  this.template.querySelector("lightning-datatable").getSelectedRows();
         if(selectedRecords.length > 0){
+            this.isLoading = true;
             saveCaseConfigs({ caseId: this.recordId, configList: selectedRecords})
             .then((result) => {
+                this.isLoading = false;
                 if(result === 'NO_NEW_INSERTS'){
                     this.showNotification(INFO_NOCONFIG_TITLE, INFO_NOCONFIG_MESSAGE, INFO_VARIANT);
                 }
@@ -53,6 +55,7 @@ export default class AvailableConfigs extends LightningElement {
                 this.selectedConfigIds = [];
             })
             .catch((error) => {
+                this.isLoading = false;
                 this.showNotification(ERROR_TITLE, error.message, ERROR_VARIANT);
             });
         }
