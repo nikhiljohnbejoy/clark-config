@@ -19,7 +19,11 @@ public with sharing class AvailableConfigsController {
         try {
             Case currentCase = [select Id, Status, Sent_Case_Configs__c from Case where Id =:caseId WITH SECURITY_ENFORCED];
             if(!currentCase.Sent_Case_Configs__c){
-                Set<String> existingLabels = getExistingCaseLabels();
+                Set<String> requestedLabels = new Set<String>();
+                for(Config__c conf: configList) {
+                    requestedLabels.add(conf.Label__c);
+                }
+                Set<String> existingLabels = getExistingCaseLabels(requestedLabels);
                 List<Case_Config__c> newCaseConfigs = getNewCaseConfigs(caseId, configList, existingLabels);
                 if(newCaseConfigs.size() > 0){
                     SObjectAccessDecision decision = Security.stripInaccessible(AccessType.CREATABLE, newCaseConfigs);
@@ -38,8 +42,8 @@ public with sharing class AvailableConfigsController {
             throw new AuraHandledException(e.getMessage());
         }
     }
-    private static Set<String> getExistingCaseLabels(){
-        List<Case_Config__c> existingConfigs = [select Label__c from Case_Config__c WITH SECURITY_ENFORCED];
+    private static Set<String> getExistingCaseLabels(Set<String> requestedLabels){
+        List<Case_Config__c> existingConfigs = [select Label__c from Case_Config__c where Label__c IN: requestedLabels WITH SECURITY_ENFORCED];
         Set<String> existingLabels = new Set<String>();
         for(Case_Config__c caseConf: existingConfigs) {
             existingLabels.add(caseConf.Label__c);
