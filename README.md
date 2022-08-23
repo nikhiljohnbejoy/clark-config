@@ -7,13 +7,13 @@ I have a related list with available Configs from which I can select Configs and
 So that, I can add new records and activate them without leaving the Case page.
 Users would like to be able to add Config records to Case without leaving the Case detail page. Users
 should see two custom related lists on the detail page Case:
+
 1. `Available Configs` - displays all available Config records.
 2. `Case Configs` – displays Configs added to the current Case
 
-
 ## Initial understanding of the requirement
 
-The user story requires the ability to add configs to a case object. There is a need to create two custom objects in the salesforce org for this requirement. They are `Config__c` and `Case_Config__c`. 
+The user story requires the ability to add configs to a case object. There is a need to create two custom objects in the salesforce org for this requirement. They are `Config__c` and `Case_Config__c`.
 
 1. `Config__c` should contain records which corresponds to the available configs a user can choose from.
 2. `Case_Config__c` will be used to store the configs assosiated with a case once added to the case by the user.
@@ -23,17 +23,19 @@ The user story requires to create two custom components `Available Configs` and 
 1. The `Available Configs` component displays information about the `Config__c` objects in a table. There is an option to select multiple records and "ADD" them to the `Case Configs` list. (If a Config record has already been added to the `Case Configs` list it cannot be added a second time.)
 
 2. The `Case Configs` component displays information about the `Case_Config__c` objects assosiated with the current case in a table.
-    The component has an “Send” button which performs the followig action:
-    1. Sets the status of the Case to "Closed".
-    2. A Post request is sent to an external service.
-    3. User cannot add any more Configs.
-    4. Send option is no longer available.
+   The component has an “Send” button which performs the followig action:
+   1. Sets the status of the Case to "Closed".
+   2. A Post request is sent to an external service.
+   3. User cannot add any more Configs.
+   4. Send option is no longer available.
 
-**Important**: 
+**Important**:
+
 1. When a user adds new Config records from the `Available Configs`, new records appear in the `Case Configs` list without having to refresh the page.
 2. Errors of the external system need to be handled.
 
 _Optional Requirements_:
+
 1. Sort records by any column in `Available Configs` and `Case Configs` components.
 2. Add pagination in the `Available Configs` component (there can be more than 200 records).
 
@@ -42,44 +44,48 @@ _Optional Requirements_:
 The user story can be divided into the following tasks and subtasks.
 
 **TASKS**:
+
 1. Creation of custom objects for the `Available Configs` and `Case Configs`.<br/>
-    _Subtasks_
-    - [x] Create custom object `Config__c` and the fields _Label_ (Text, Unique), _Type_ (Text), _Amount_ (Number).
-    - [x] Create custom object `Case_Config__c` and the fields _Label_ (Text, Unique), _Type_ (Text), _Amount_ (Number), _Case_ (Lookup to Case object). 
+   _Subtasks_
+
+   - [x] Create custom object `Config__c` and the fields _Label_ (Text, Unique), _Type_ (Text), _Amount_ (Number).
+   - [x] Create custom object `Case_Config__c` and the fields _Label_ (Text, Unique), _Type_ (Text), _Amount_ (Number), _Case_ (Lookup to Case object).
 
 2. Creation of the `Available Configs` lightning web component.<br/>
-    _Subtasks_
-    - [x] Create a new lwc component with name availableConfigs.
-    - [x] Create a apex controller to retrieve the list of configs.
-    - [ ] Wrtie test class to validate the apex class functionality.
-    - [x] Display the available configs in a tabular format.
-    - [x] It should be possible to select multiple records in the list view.
-    - [x] Create an "ADD" button to send the selected configs to the `Case Configs` list.
-    - [x] Create a LightningMessageChannel for communicating to the `Case Configs` component.
-    - [x] _Optional_ : Sort records by any column in the list.
-    - [x] _Optional_ : Add Pagination to the list.
-    - [ ] _Optional_ : Testing of the LwC component.
+   _Subtasks_
+
+   - [x] Create a new lwc component with name availableConfigs.
+   - [x] Create a apex controller to retrieve the list of configs.
+   - [x] Wrtie test class to validate the apex class functionality.
+   - [x] Display the available configs in a tabular format.
+   - [x] It should be possible to select multiple records in the list view.
+   - [x] Create an "ADD" button to send the selected configs to the `Case Configs` list.
+   - [x] Create a LightningMessageChannel for communicating to the `Case Configs` component.
+   - [x] _Optional_ : Sort records by any column in the list.
+   - [x] _Optional_ : Add Pagination to the list.
+   - [ ] _Optional_ : Testing of the LwC component.
 
 3. Creation of the `Case Configs` lightning web component.<br/>
-    _Subtasks_
-    - [x] Create a new lwc component with name caseConfigs.
-    - [x] Create a apex controller to retrieve the list of case configs and callout.
-    - [ ] Write test class to validate the apex class functionality.
-    - [x] Display the case configs in a tabular format.
-    - [x] Create an "SEND" button to send the configs.
-    - [x] On "SEND": Sets the status of the Case to "Closed".
-    - [x] On "SEND": A Post request is sent to an external service. _(Adding NamedCredential, wrapper class, sending request, Handling Error)_
-    - [x] On "SEND": User cannot add any more Configs.
-    - [x] On "SEND": Send option is no longer available.
-    - [x] _Optional_ : Sort records by any column in the list.
-    - [ ] _Optional_ : Testing of the LwC component.
+   _Subtasks_
+   - [x] Create a new lwc component with name caseConfigs.
+   - [x] Create a apex controller to retrieve the list of case configs and callout.
+   - [x] Write test class to validate the apex class functionality.
+   - [x] Display the case configs in a tabular format.
+   - [x] Create an "SEND" button to send the configs.
+   - [x] On "SEND": Sets the status of the Case to "Closed".
+   - [x] On "SEND": A Post request is sent to an external service. _(Adding NamedCredential, wrapper class, sending request, Handling Error)_
+   - [x] On "SEND": User cannot add any more Configs.
+   - [x] On "SEND": Send option is no longer available.
+   - [x] _Optional_ : Sort records by any column in the list.
+   - [ ] _Optional_ : Testing of the LwC component.
 
 ## Understandings and Notes
+
 - **ENDPOINT USED** - The endpoint used is [Request Catcher URL](https://clark-test-endpoint.requestcatcher.com/test).
 - `Case_Config__c` - fields: `Label` (Text, **Unique**) , which means that a particular `Config__c` configuration can be assosiated with one case only.
 - **Requirement** _When the “Send” button is pressed you cannot add new Config records and send the request a second time_ Is intepreted as once a send button is pressed, the "Add" button in `Available Configs` and the the "Send" button in `Case Configs` should no longer have the ability to add or send. This behavior is understood to be persistent. So we would need to store the information of cases in which the action has been performed and check on load of the component.
-Not using Custom metadata object since the information does not need to be deployable
-Not considering Case status "Closed" as the criteria for preventing button actions.
-**Decision** To use a custom field on Case object to track if it already sent the configs. 
+  Not using Custom metadata object since the information does not need to be deployable
+  Not considering Case status "Closed" as the criteria for preventing button actions.
+  **Decision** To use a custom field on Case object to track if it already sent the configs.
 - Restriction of addition of existing configs to the case configs to be done on the `Case Configs` component since in the future there can be another component which needs to interact with the `Available Configs` component in the case detail page and we should not hide/disable the options because they exist in `Case Configs`.
 - _To Think about_ Since the `Label__c` fields are unique, Maybe there is no need for using the Ids in the case of `Config__c` and `Case_Config__c`

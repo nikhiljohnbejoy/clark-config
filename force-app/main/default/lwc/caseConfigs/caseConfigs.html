@@ -1,25 +1,43 @@
 <template>
-    <div class="spinner">
-        <template if:true={isLoading}>
-             <lightning-spinner alternative-text="Loading" variant="brand" size="large">
-             </lightning-spinner>
-        </template>
-    </div>
-    <lightning-card title="Case Configs" icon-name="standard:case_transcript" class="slds-card_boundary">
-        <template if:true={configs.data}>
-            <lightning-button label="Send" disabled={disableSendButton} title="Click button to send the case configs" slot="actions" onclick={sendCaseConfigs}></lightning-button>
-            <div class="slds-scrollable_y slds-p-horizontal_small" style="height:12rem">
-                <lightning-datatable
-                        key-field="Id"
-                        data={configs.data}
-                        columns={columns}
-                        show-row-number-column
-                        hide-checkbox-column="true"
-                        sorted-by={sortBy}
-                        sorted-direction={sortDirection}
-                        onsort={doSorting}>
-                </lightning-datatable>
-            </div>
-        </template>
-    </lightning-card>
+  <div class="spinner">
+    <template if:true={isLoading}>
+      <lightning-spinner
+        alternative-text="Loading"
+        variant="brand"
+        size="large"
+      >
+      </lightning-spinner>
+    </template>
+  </div>
+  <lightning-card
+    title="Case Configs"
+    icon-name="standard:case_transcript"
+    class="slds-card_boundary"
+  >
+    <template if:true={isTableVisible}>
+      <lightning-button
+        label="Send"
+        disabled={disableSendButton}
+        title="Click button to send the case configs"
+        slot="actions"
+        onclick={sendCaseConfigs}
+      ></lightning-button>
+      <div
+        class="slds-scrollable_y slds-p-horizontal_small"
+        style="height: 12rem"
+      >
+        <lightning-datatable
+          key-field="Id"
+          data={configs.data}
+          columns={columns}
+          show-row-number-column
+          hide-checkbox-column="true"
+          sorted-by={sortBy}
+          sorted-direction={sortDirection}
+          onsort={doSorting}
+        >
+        </lightning-datatable>
+      </div>
+    </template>
+  </lightning-card>
 </template>
