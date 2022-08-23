@@ -23,7 +23,7 @@
         <div slot="footer" class="slds-clearfix">
             <div class="slds-grid">
                 <lightning-button disabled={isPrevDisabled} label="Prev" title="Go to previous Page" onclick={gotoPrevious} class="slds-var-m-right_x-small slds-float_left"></lightning-button>
-                <template for:each={getPagesList} for:item="page">
+                <template for:each={pages} for:item="page">
                     <lightning-button key={page} variant="base" label={page} data-id={page} onclick={gotoPage} class="slds-col slds-var-m-left_x-small"></lightning-button>
                 </template>
                 <lightning-button disabled={isNextDisabled} label="Next" title="Go to next Page" onclick={gotoNext} class="slds-var-m-left_x-small slds-float_right"></lightning-button>
