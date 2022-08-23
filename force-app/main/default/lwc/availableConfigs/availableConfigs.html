@@ -7,11 +7,11 @@
     </div>
     <lightning-card title="Available Configs" icon-name="standard:bundle_config" class="slds-card_boundary">
         <lightning-button label="Add" disabled={disableAddButton} title="Click to add to the case configs" slot="actions" onclick={addCaseConfigs}></lightning-button>
-        <template if:true={configs.data}>
-                <div class="slds-scrollable_y slds-p-horizontal_small" style="height:10rem">
+        <template if:true={configs}>
+                <div class="slds-scrollable_y slds-p-horizontal_small" style="height:12rem">
                     <lightning-datatable
                             key-field="Id"
-                            data={configs.data}
+                            data={configs}
                             columns={columns}
                             selected-rows={selectedConfigIds}
                             sorted-by={sortBy}
@@ -20,6 +20,14 @@
                     </lightning-datatable>
                 </div>
         </template>
-        <p slot="footer">Card Footer</p>
+        <div slot="footer" class="slds-clearfix">
+            <div class="slds-grid">
+                <lightning-button disabled={isPrevDisabled} label="Prev" title="Go to previous Page" onclick={gotoPrevious} class="slds-var-m-right_x-small slds-float_left"></lightning-button>
+                <template for:each={getPagesList} for:item="page">
+                    <lightning-button key={page} variant="base" label={page} data-id={page} onclick={gotoPage} class="slds-col slds-var-m-left_x-small"></lightning-button>
+                </template>
+                <lightning-button disabled={isNextDisabled} label="Next" title="Go to next Page" onclick={gotoNext} class="slds-var-m-left_x-small slds-float_right"></lightning-button>
+            </div>
+        </div>
     </lightning-card>
 </template>

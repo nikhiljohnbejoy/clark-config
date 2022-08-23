@@ -1,11 +1,14 @@
 public with sharing class AvailableConfigsController {
     @AuraEnabled(cacheable=true)
-    public static List<Config__c> getAvailableConfigs(String field, String sortOrder){
+    public static List<Config__c> getAvailableConfigs(String field, String sortOrder, Integer queryLimit, Integer queryOffset){
         try {
             String query;
             query  = 'select Id, Label__c, Type__c, Amount__c from Config__c WITH SECURITY_ENFORCED';
             if(field != null && sortOrder !=null){
                 query += ' ORDER BY '+field+' '+sortOrder;
+            }
+            if(queryLimit !=null && queryOffset!=null){
+                query +=' limit :queryLimit offset :queryOffset';
             }
             return Database.query(String.escapeSingleQuotes(query));
             //return [select Id, Label__c, Type__c, Amount__c from Config__c WITH SECURITY_ENFORCED];

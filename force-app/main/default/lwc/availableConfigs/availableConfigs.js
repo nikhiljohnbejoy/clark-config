@@ -27,13 +27,47 @@ export default class AvailableConfigs extends LightningElement {
     columns=Columns;
     sortBy= LABEL_FIELD.fieldApiName;
     sortDirection= 'asc';
-    @wire(getAvailableConfigs,{field : '$sortBy',sortOrder : '$sortDirection'})
-    configs;
+    limit = 5;
+    offset = 0;
+    noOfPages=0;
+    currentPage=0;
+    pages = [];
     @wire(MessageContext)
     messageContext;
     disableAddButton = false;
     selectedConfigIds = [];
     isLoading = false;
+    isSortTrigger = true;
+    hasNoMorePages = false;
+    configsMap = new Map();
+    selectedConfigsMap = new Map();
+    configs;
+    error;
+    @wire(getAvailableConfigs,{field : '$sortBy', sortOrder : '$sortDirection', queryLimit : '$limit', queryOffset : '$offset'})
+    getAllConfigs({ error, data }) {
+        if (data) {
+            if(this.isSortTrigger){
+                this.noOfPages=0;
+                this.pages=[];
+                this.isSortTrigger=false;
+            }
+            if(data.length != 0){
+                this.addPage();
+                //this.configs = data;
+                this.configsMap.set(this.noOfPages,data);
+                this.navigateToPage(this.noOfPages);
+                this.hasNoMorePages = false;
+            }
+            else{
+                this.hasNoMorePages = true;
+            }
+            this.error = undefined;
+        } else if (error) {
+            this.error = error;
+            this.configs = undefined;
+        }
+    }
+
     addCaseConfigs(){
         let selectedRecords =  this.template.querySelector("lightning-datatable").getSelectedRows();
         if(selectedRecords.length > 0){
@@ -72,8 +106,47 @@ export default class AvailableConfigs extends LightningElement {
         this.dispatchEvent(evt);
     }
     doSorting(event) {
+        this.isSortTrigger = true;
         this.selectedConfigIds = [];
+        this.offset=0;
         this.sortBy = event.detail.fieldName;
         this.sortDirection = event.detail.sortDirection;
+    }
+    get isPrevDisabled(){
+        return (this.pages.length<2) || (this.currentPage == 1);
+    }
+    get isNextDisabled(){
+        return (this.configs && (this.configs.length < this.limit)) || this.hasNoMorePages;
+    }
+    gotoNext(){
+        if(this.currentPage < this.noOfPages){
+            this.navigateToPage(this.currentPage+1);
+        }
+        else{
+            this.offset +=this.limit;
+        }
+    }
+    gotoPage(event){
+        this.navigateToPage(parseInt(event.target.dataset.id));
+    }
+    gotoPrevious(){
+        this.navigateToPage(this.currentPage-1);
+    }
+    navigateToPage(pageNo){
+        if(this.currentPage != 0){
+            const oldSelectedButton = this.template.querySelector('[data-id=\''+this.currentPage+'\']');
+            oldSelectedButton.classList.remove('current-page');
+        }
+        this.configs = this.configsMap.get(pageNo);
+        this.currentPage = pageNo;
+        const currentButton = this.template.querySelector('[data-id=\''+pageNo+'\']');
+        if(currentButton){
+            currentButton.classList.add('current-page');
+        }
+    }
+    addPage(){
+        this.noOfPages+=1;
+        //this.currentPage=this.noOfPages;
+        this.pages = [...this.pages, this.noOfPages];
     }
 }
