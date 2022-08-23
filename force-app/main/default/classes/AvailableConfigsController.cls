@@ -17,12 +17,13 @@ public with sharing class AvailableConfigsController {
         }
     }
     @AuraEnabled
-    public static string saveCaseConfigs(Id caseId, List<Config__c> configList){
+    public static string saveCaseConfigs(Id caseId, List<Id> configIds){
         String status;
         try {
             Case currentCase = [select Id, Status, Sent_Case_Configs__c from Case where Id =:caseId WITH SECURITY_ENFORCED];
             if(!currentCase.Sent_Case_Configs__c){
                 Set<String> requestedLabels = new Set<String>();
+                List<Config__c> configList = [select Label__c, Type__c, Amount__c from Config__c WHERE Id in :configIds WITH SECURITY_ENFORCED];
                 for(Config__c conf: configList) {
                     requestedLabels.add(conf.Label__c);
                 }

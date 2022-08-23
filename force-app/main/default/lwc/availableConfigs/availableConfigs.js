@@ -8,9 +8,9 @@ import LABEL_FIELD from '@salesforce/schema/Config__c.Label__c';
 import TYPE_FIELD from '@salesforce/schema/Config__c.Type__c';
 import AMOUNT_FIELD from '@salesforce/schema/Config__c.Amount__c';
 const Columns = [
-    { label: 'Label', fieldName: LABEL_FIELD.fieldApiName, type: 'text', sortable: true },
-    { label: 'Type', fieldName: TYPE_FIELD.fieldApiName, type: 'text', sortable: true },
-    { label: 'Number', fieldName: AMOUNT_FIELD.fieldApiName, type: 'number', sortable: true }
+    { label: 'Label', fieldName: LABEL_FIELD.fieldApiName, type: 'text', sortable: true, cellAttributes: { alignment: 'left' } },
+    { label: 'Type', fieldName: TYPE_FIELD.fieldApiName, type: 'text', sortable: true, cellAttributes: { alignment: 'left' } },
+    { label: 'Number', fieldName: AMOUNT_FIELD.fieldApiName, type: 'number', sortable: true, cellAttributes: { alignment: 'left' } }
 ];
 const SUCCESS_TITLE = 'Success';
 const SUCCESS_VARIANT = 'success';
@@ -37,7 +37,6 @@ export default class AvailableConfigs extends LightningElement {
     disableAddButton = false;
     selectedConfigIds = [];
     isLoading = false;
-    isSortTrigger = true;
     hasNoMorePages = false;
     configsMap = new Map();
     selectedConfigsMap = new Map();
@@ -46,15 +45,10 @@ export default class AvailableConfigs extends LightningElement {
     @wire(getAvailableConfigs,{field : '$sortBy', sortOrder : '$sortDirection', queryLimit : '$limit', queryOffset : '$offset'})
     getAllConfigs({ error, data }) {
         if (data) {
-            if(this.isSortTrigger){
-                this.noOfPages=0;
-                this.pages=[];
-                this.isSortTrigger=false;
-            }
             if(data.length != 0){
                 this.addPage();
-                //this.configs = data;
-                this.configsMap.set(this.noOfPages,data);
+                this.configsMap.set(this.noOfPages, data);
+                this.selectedConfigsMap.set(this.noOfPages, []);
                 this.navigateToPage(this.noOfPages);
                 this.hasNoMorePages = false;
             }
@@ -69,10 +63,11 @@ export default class AvailableConfigs extends LightningElement {
     }
 
     addCaseConfigs(){
-        let selectedRecords =  this.template.querySelector("lightning-datatable").getSelectedRows();
-        if(selectedRecords.length > 0){
+        this.addCurrentIdsToMap();
+        let selectedIds =[...this.selectedConfigsMap.values()].flat();
+        if(selectedIds.length > 0){
             this.isLoading = true;
-            saveCaseConfigs({ caseId: this.recordId, configList: selectedRecords})
+            saveCaseConfigs({ caseId: this.recordId, configIds: selectedIds})
             .then((result) => {
                 this.isLoading = false;
                 if(result === 'NO_NEW_INSERTS'){
@@ -87,6 +82,7 @@ export default class AvailableConfigs extends LightningElement {
                     this.showNotification(SUCCESS_TITLE, result, SUCCESS_VARIANT);
                 }
                 this.selectedConfigIds = [];
+                this.selectedConfigsMap.clear();
             })
             .catch((error) => {
                 this.isLoading = false;
@@ -106,9 +102,12 @@ export default class AvailableConfigs extends LightningElement {
         this.dispatchEvent(evt);
     }
     doSorting(event) {
-        this.isSortTrigger = true;
         this.selectedConfigIds = [];
         this.offset=0;
+        this.currentPage=0;
+        this.noOfPages=0;
+        this.pages=[];
+        this.selectedConfigsMap.clear();
         this.sortBy = event.detail.fieldName;
         this.sortDirection = event.detail.sortDirection;
     }
@@ -136,8 +135,11 @@ export default class AvailableConfigs extends LightningElement {
         if(this.currentPage != 0){
             const oldSelectedButton = this.template.querySelector('[data-id=\''+this.currentPage+'\']');
             oldSelectedButton.classList.remove('current-page');
+            this.addCurrentIdsToMap();
         }
+        
         this.configs = this.configsMap.get(pageNo);
+        this.selectedConfigIds = this.selectedConfigsMap.get(pageNo);
         this.currentPage = pageNo;
         const currentButton = this.template.querySelector('[data-id=\''+pageNo+'\']');
         if(currentButton){
@@ -146,7 +148,13 @@ export default class AvailableConfigs extends LightningElement {
     }
     addPage(){
         this.noOfPages+=1;
-        //this.currentPage=this.noOfPages;
         this.pages = [...this.pages, this.noOfPages];
+    }
+    addCurrentIdsToMap(){
+        let selectedRecords =  this.template.querySelector("lightning-datatable").getSelectedRows();
+        let ids = selectedRecords.map(function(selection) {
+            return selection.Id;
+            });
+        this.selectedConfigsMap.set(this.currentPage,ids);
     }
 }

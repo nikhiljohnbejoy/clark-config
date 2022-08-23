@@ -10,9 +10,9 @@ import LABEL_FIELD from '@salesforce/schema/Case_Config__c.Label__c';
 import TYPE_FIELD from '@salesforce/schema/Case_Config__c.Type__c';
 import AMOUNT_FIELD from '@salesforce/schema/Case_Config__c.Amount__c';
 const Columns = [
-    { label: 'Label', fieldName: LABEL_FIELD.fieldApiName, type: 'text', sortable: true },
-    { label: 'Type', fieldName: TYPE_FIELD.fieldApiName, type: 'text', sortable: true },
-    { label: 'Number', fieldName: AMOUNT_FIELD.fieldApiName, type: 'number', sortable: true }
+    { label: 'Label', fieldName: LABEL_FIELD.fieldApiName, type: 'text', sortable: true, cellAttributes: { alignment: 'left' } },
+    { label: 'Type', fieldName: TYPE_FIELD.fieldApiName, type: 'text', sortable: true, cellAttributes: { alignment: 'left' } },
+    { label: 'Number', fieldName: AMOUNT_FIELD.fieldApiName, type: 'number', sortable: true, cellAttributes: { alignment: 'left' } }
 ];
 const SUCCESS_TITLE = 'Success';
 const SUCCESS_VARIANT = 'success';
