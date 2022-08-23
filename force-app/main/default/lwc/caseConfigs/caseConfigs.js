@@ -10,9 +10,9 @@ import LABEL_FIELD from '@salesforce/schema/Case_Config__c.Label__c';
 import TYPE_FIELD from '@salesforce/schema/Case_Config__c.Type__c';
 import AMOUNT_FIELD from '@salesforce/schema/Case_Config__c.Amount__c';
 const Columns = [
-    { label: 'Label', fieldName: LABEL_FIELD.fieldApiName, type: 'text' },
-    { label: 'Type', fieldName: TYPE_FIELD.fieldApiName, type: 'text' },
-    { label: 'Number', fieldName: AMOUNT_FIELD.fieldApiName, type: 'number' }
+    { label: 'Label', fieldName: LABEL_FIELD.fieldApiName, type: 'text', sortable: true },
+    { label: 'Type', fieldName: TYPE_FIELD.fieldApiName, type: 'text', sortable: true },
+    { label: 'Number', fieldName: AMOUNT_FIELD.fieldApiName, type: 'number', sortable: true }
 ];
 const SUCCESS_TITLE = 'Success';
 const SUCCESS_VARIANT = 'success';
@@ -26,12 +26,14 @@ const INFO_SENT_MESSAGE = 'The case configs have already been sent';
 const INFO_VARIANT = 'info';
 export default class CaseConfigs extends LightningElement {
     @api recordId;
+    columns = Columns;
+    sortBy= LABEL_FIELD.fieldApiName;
+    sortDirection= 'asc';
     subscription = null;
     @wire(MessageContext)
     messageContext;
-    @wire(getCaseConfigs, { caseId: '$recordId' })
+    @wire(getCaseConfigs, { caseId: '$recordId', field : '$sortBy', sortOrder : '$sortDirection'})
     configs;
-    columns = Columns;
     disableSendButton = false;
     isLoading = false;
     sendCaseConfigs(){
@@ -97,5 +99,9 @@ export default class CaseConfigs extends LightningElement {
 
     disconnectedCallback() {
         this.unsubscribeToMessageChannel();
+    }
+    doSorting(event) {
+        this.sortBy = event.detail.fieldName;
+        this.sortDirection = event.detail.sortDirection;
     }
 }

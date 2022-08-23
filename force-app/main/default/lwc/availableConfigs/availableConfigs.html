@@ -8,17 +8,17 @@
     <lightning-card title="Available Configs" icon-name="standard:bundle_config" class="slds-card_boundary">
         <lightning-button label="Add" disabled={disableAddButton} title="Click to add to the case configs" slot="actions" onclick={addCaseConfigs}></lightning-button>
         <template if:true={configs.data}>
-            <p class="slds-p-horizontal_small">
-                <lightning-datatable
-                        key-field="Id"
-                        data={configs.data}
-                        columns={columns}
-                        selected-rows={selectedConfigIds}
-                        sorted-by={sortBy}
-                        sorted-direction={sortDirection}
-                        onsort={doSorting}>
-                </lightning-datatable>
-            </p>
+                <div class="slds-scrollable_y slds-p-horizontal_small" style="height:10rem">
+                    <lightning-datatable
+                            key-field="Id"
+                            data={configs.data}
+                            columns={columns}
+                            selected-rows={selectedConfigIds}
+                            sorted-by={sortBy}
+                            sorted-direction={sortDirection}
+                            onsort={doSorting}>
+                    </lightning-datatable>
+                </div>
         </template>
         <p slot="footer">Card Footer</p>
     </lightning-card>

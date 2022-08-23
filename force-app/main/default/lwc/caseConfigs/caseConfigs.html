@@ -8,14 +8,17 @@
     <lightning-card title="Case Configs" icon-name="standard:case_transcript" class="slds-card_boundary">
         <template if:true={configs.data}>
             <lightning-button label="Send" disabled={disableSendButton} title="Click button to send the case configs" slot="actions" onclick={sendCaseConfigs}></lightning-button>
-            <p class="slds-p-horizontal_small">
+            <div class="slds-scrollable_y slds-p-horizontal_small" style="height:10rem">
                 <lightning-datatable
                         key-field="Id"
                         data={configs.data}
                         columns={columns}
-                        hide-checkbox-column="true">
+                        hide-checkbox-column="true"
+                        sorted-by={sortBy}
+                        sorted-direction={sortDirection}
+                        onsort={doSorting}>
                 </lightning-datatable>
-            </p>
+            </div>
         </template>
         <p slot="footer">Card Footer</p>
     </lightning-card>

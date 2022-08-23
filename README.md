@@ -56,7 +56,7 @@ The user story can be divided into the following tasks and subtasks.
     - [x] It should be possible to select multiple records in the list view.
     - [x] Create an "ADD" button to send the selected configs to the `Case Configs` list.
     - [x] Create a LightningMessageChannel for communicating to the `Case Configs` component.
-    - [ ] _Optional_ : Sort records by any column in the list.
+    - [x] _Optional_ : Sort records by any column in the list.
     - [ ] _Optional_ : Add Pagination to the list.
     - [ ] _Optional_ : Testing of the LwC component.
 
@@ -71,7 +71,7 @@ The user story can be divided into the following tasks and subtasks.
     - [x] On "SEND": A Post request is sent to an external service. _(Adding NamedCredential, wrapper class, sending request, Handling Error)_
     - [x] On "SEND": User cannot add any more Configs.
     - [x] On "SEND": Send option is no longer available.
-    - [ ] _Optional_ : Sort records by any column in the list.
+    - [x] _Optional_ : Sort records by any column in the list.
     - [ ] _Optional_ : Testing of the LwC component.
 
 ## Understandings and Notes
@@ -82,3 +82,4 @@ Not using Custom metadata object since the information does not need to be deplo
 Not considering Case status "Closed" as the criteria for preventing button actions.
 **Decision** To use a custom field on Case object to track if it already sent the configs. 
 - Restriction of addition of existing configs to the case configs to be done on the `Case Configs` component since in the future there can be another component which needs to interact with the `Available Configs` component in the case detail page and we should not hide/disable the options because they exist in `Case Configs`.
+- _To Think about_ Since the `Label__c` fields are unique, Maybe there is no need for using the Ids in the case of `Config__c` and `Case_Config__c`
