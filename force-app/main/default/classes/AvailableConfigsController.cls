@@ -11,7 +11,6 @@ public with sharing class AvailableConfigsController {
                 query +=' limit :queryLimit offset :queryOffset';
             }
             return Database.query(String.escapeSingleQuotes(query));
-            //return [select Id, Label__c, Type__c, Amount__c from Config__c WITH SECURITY_ENFORCED];
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }

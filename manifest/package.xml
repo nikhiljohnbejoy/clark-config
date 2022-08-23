@@ -32,5 +32,9 @@
         <members>Case_Config_Page</members>
         <name>FlexiPage</name>
     </types>
+    <types>
+        <members>Testdata_Config</members>
+        <name>StaticResource</name>
+    </types>
     <version>55.0</version>
 </Package>

@@ -8,7 +8,6 @@ public with sharing class CaseConfigsController {
                 query += ' ORDER BY '+field+' '+sortOrder;
             }
             return Database.query(String.escapeSingleQuotes(query));
-            //return [select Id, Label__c, Type__c, Amount__c from Case_Config__c where Case__c =:caseId WITH SECURITY_ENFORCED];
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
@@ -19,10 +18,8 @@ public with sharing class CaseConfigsController {
         try {
             Case currentCase = [select Id, Status, Sent_Case_Configs__c from Case where Id =:caseId WITH SECURITY_ENFORCED];
             if(!currentCase.Sent_Case_Configs__c){
-                //On "SEND": A Post request is sent to an external service.
                 HTTPResponse res = makeCallout(caseId, caseConfigs);
                 if(res.getStatusCode() == 200){
-                    //On "SEND": Sets the status of the Case to "Closed".
                     updateCaseStatus(currentCase);
                     status = 'SUCCESS';
                 }

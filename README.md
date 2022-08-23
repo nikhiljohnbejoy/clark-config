@@ -57,7 +57,7 @@ The user story can be divided into the following tasks and subtasks.
     - [x] Create an "ADD" button to send the selected configs to the `Case Configs` list.
     - [x] Create a LightningMessageChannel for communicating to the `Case Configs` component.
     - [x] _Optional_ : Sort records by any column in the list.
-    - [ ] _Optional_ : Add Pagination to the list.
+    - [x] _Optional_ : Add Pagination to the list.
     - [ ] _Optional_ : Testing of the LwC component.
 
 3. Creation of the `Case Configs` lightning web component.<br/>
