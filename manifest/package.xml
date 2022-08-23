@@ -12,7 +12,10 @@
     <types>
         <members>CaseConfigWrapper</members>
         <members>AvailableConfigsController</members>
+        <members>AvailableConfigsControllerTest</members>
         <members>CaseConfigsController</members>
+        <members>CaseConfigsControllerTest</members>
+        <members>CaseConfigRemoteMockImpl</members>
         <name>ApexClass</name>
     </types>
     <types>
