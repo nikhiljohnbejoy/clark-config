@@ -11,6 +11,13 @@
         <name>CustomObject</name>
     </types>
     <types>
+        <members>Case_Config__c.Amount__c</members>
+        <members>Case_Config__c.Case__c</members>
+        <members>Case_Config__c.Label__c</members>
+        <members>Case_Config__c.Type__c</members>
+        <members>Config__c.Amount__c</members>
+        <members>Config__c.Label__c</members>
+        <members>Config__c.Type__c</members>
         <members>Case.Sent_Case_Configs__c</members>
         <name>CustomField</name>
     </types>
